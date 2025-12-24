@@ -1,0 +1,54 @@
+import { getGroups } from "./member.service.js";
+
+export const handleCommand = async (command, msg, bot) => {
+  switch (command) {
+    case "start":
+      return start(msg, bot);
+    case "help":
+      return help(msg, bot);
+    case "groups":
+      return groups(msg, bot);
+    default:
+      return unknown(msg, bot);
+  }
+};
+
+const start = async (msg, bot) => {
+  const chatId = msg.chat.id;
+
+  return bot.sendMessage(
+    chatId,
+    `🤖 *TeleBot*
+
+Xin chào *${msg.from.first_name}*
+Gõ /help để xem danh sách lệnh.`,
+    { parse_mode: "Markdown" }
+  );
+};
+
+const help = async (msg, bot) => {
+  return bot.sendMessage(
+    msg.chat.id,
+    `/start - Khởi động bot
+/help - Hướng dẫn
+/groups - Danh sách group`
+  );
+};
+
+const groups = async (msg, bot) => {
+  const groups = await getGroups();
+  console.log(groups);
+
+  return bot.sendMessage(
+    msg.chat.id,
+    `📋 Danh sách group
+    ${groups.map((g) => `- ${g.title} (ID: ${g.chatId})`).join("\n")}`
+  );
+};
+
+const unknown = async (msg, bot) => {
+  return bot.sendMessage(
+    msg.chat.id,
+    "❓ Lệnh không hợp lệ. Gõ /help để xem danh sách lệnh."
+  );
+};

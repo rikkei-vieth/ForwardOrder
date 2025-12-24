@@ -12,8 +12,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "dotenv": "^17.2.3",
+    "firebase-admin": "^13.6.0",
     "node-telegram-bot-api": "^0.67.0"
   }
 }
