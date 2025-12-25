@@ -1,33 +1,39 @@
-import { getMessageDoneOrder, getMessageOrder } from "../helpers/group.message.js";
+import CONSTANTS from "../constants/constants.js";
+import {
+  getMessageDoneOrder,
+  getMessageOrder,
+} from "../helpers/group.message.js";
 import { getListGroups } from "./group.service.js";
 
 export async function handleGroupMessage(msg, bot) {
   // is order message
-  const isOrderMessage = msg.text.startsWith("Order");
+  const isOrderMessage = msg.text?.toLowerCase().startsWith("order");
 
   // is done message
-  const isDoneMessage = msg.text.startsWith("Done Order");
-
-  const msgIdString = msg.chat.id.toString();
+  const isDoneMessage = msg.caption?.toLowerCase()?.startsWith("done order");
 
   // get list group
   const listGroup = await getListGroups();
-  console.log("listGroup", listGroup);
-  
-  const orderGroup = listGroup.find((group) => group.type === "order");
-  const loaderGroup = listGroup.find((group) => group.type === "loader");
+
+  const orderGroup = listGroup.filter(
+    (group) => group.type === CONSTANTS.TYPE_ORDER
+  );
+  const loaderGroup = listGroup.filter(
+    (group) => group.type === CONSTANTS.TYPE_LOADER
+  );
 
   if (isOrderMessage) {
-    orderGroup.forEach(async (group) => {
+    loaderGroup.forEach(async (group) => {
       const messageText = getMessageOrder(msg);
       bot.sendMessage(group.chatId, messageText);
     });
   }
 
   if (isDoneMessage) {
-    loaderGroup.forEach(async (group) => {
-      const messageText = getMessageDoneOrder(isDoneMessage, msg);
-      bot.sendMessage(group.chatId, messageText);
+    const photo = msg.photo[msg.photo.length - 1]; // ảnh nét nhất
+    const fileId = photo.file_id;
+    orderGroup.forEach(async (group) => {
+      bot.sendPhoto(group.chatId, fileId, { caption: msg.caption });
     });
   }
 }

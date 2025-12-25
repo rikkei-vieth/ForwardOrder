@@ -3,15 +3,9 @@
  *
  * @param {*} msg
  * @returns
- */ 
+ */
 const getMessageOrder = (msg) => {
-  const userFullName = `${msg.from.first_name || ""} ${
-    msg.from.last_name || ""
-  }`.trim();
-
-  const userName = msg.from.username ? `@${msg.from.username}` : "No username";
-
-  return `📦 New Order Received!\n\nOrder_Id: ${msg.message_id}\n\n${msg.text}\n\nCustomer: ${userFullName}\nUsername: ${userName}`;
+  return `📦 New Order Received!\n\n${msg.text}`;
 };
 
 /**
@@ -33,15 +27,11 @@ const getMessageDoneOrder = (isDoneMessage, msg) => {
   // remove \n from each line
   const newMsgLine = msgSplit.map((line) => line.replace("\n", ""));
 
-  const orderIdLine = newMsgLine.find((line) => line.startsWith("Order_Id:"));
-
-  const customerNameLine = newMsgLine.find((line) =>
-    line.startsWith("Customer:")
+  const orderIdLine = newMsgLine.find((line) =>
+    line?.toLowerCase().startsWith("order #")
   );
 
-  const userNameLine = newMsgLine.find((line) => line.startsWith("Username:"));
-
-  return `✅ Order Completed!\n\n ${orderIdLine}\n\n${customerNameLine}\n${userNameLine}`;
+  return `✅ Order Completed!\n\n ${orderIdLine}`;
 };
 
 export { getMessageOrder, getMessageDoneOrder };

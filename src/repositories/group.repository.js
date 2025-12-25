@@ -4,10 +4,10 @@ import CONSTANTS from "../constants/constants.js";
 /**
  * Get list group
  */
-const getGroups = async () => { 
+const getGroups = async () => {
   const groups = await db.collection(CONSTANTS.GROUP_COLLECTION).get();
   return groups.docs.map((doc) => doc.data());
-}
+};
 
 /**
  * Get group by chatId
@@ -15,9 +15,12 @@ const getGroups = async () => {
  * @returns {Promise<Object>}
  */
 const getGroup = async (chatId) => {
-  const group = await db.collection(CONSTANTS.GROUP_COLLECTION).doc(String(chatId)).get();
+  const group = await db
+    .collection(CONSTANTS.GROUP_COLLECTION)
+    .doc(String(chatId))
+    .get();
   return group.data();
-}
+};
 
 /**
  * Save group
@@ -25,7 +28,7 @@ const getGroup = async (chatId) => {
 const storeGroup = async (groupChat) => {
   const groupRef = db
     .collection(CONSTANTS.GROUP_COLLECTION)
-    .doc(String(groupChat.id));
+    .doc(String(groupChat.chatId));
 
   await groupRef.set(
     {
@@ -34,14 +37,16 @@ const storeGroup = async (groupChat) => {
     },
     { merge: true }
   );
-}
+};
 
 /**
  * Delete group
  */
 const removeGroup = async (chatId) => {
-  const groupRef = db.collection(CONSTANTS.GROUP_COLLECTION).doc(String(chatId));
+  const groupRef = db
+    .collection(CONSTANTS.GROUP_COLLECTION)
+    .doc(String(chatId));
   await groupRef.delete();
-}
+};
 
 export { getGroups, getGroup, storeGroup, removeGroup };

@@ -14,6 +14,7 @@ const botCommands = [
 ];
 
 const groupCommands = [
+  { command: "help", description: "Hướng dẫn sử dụng bot" },
   {
     command: "order",
     description: "chỉ định group này là group nhận order",

@@ -3,17 +3,19 @@ import { handleGroupMessage } from "../services/message.group.service.js";
 
 /**
  * register message event
- * 
+ *
  * @param {Object} bot - bot object
  * @returns {Promise<void>}
  */
 export function registerMessageEvent(bot) {
   bot.on("message", async (msg) => {
-    // 1️⃣ bỏ qua message không có sender
-    if (!msg.from) return;
+    console.log(msg);
+
+    // 1️⃣ reject when message has no from or text or cation
+    if (!msg.from && !msg.text && !msg.caption) return;
 
     // ⚠️ COMMAND → STOP
-  if (msg.text && (msg.text.startsWith('/') || msg.text.startsWith('!'))) return;
+    if (msg?.text?.startsWith("/") || msg?.text?.startsWith("!")) return;
 
     // 2️⃣ message do bot gửi → bỏ qua
     if (msg.from.is_bot) return;

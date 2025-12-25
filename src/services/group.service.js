@@ -1,4 +1,10 @@
-import { getGroups, storeGroup, removeGroup, getGroup } from "../repositories/group.repository.js";
+import CONSTANTS from "../constants/constants.js";
+import {
+  getGroups,
+  storeGroup,
+  removeGroup,
+  getGroup,
+} from "../repositories/group.repository.js";
 
 /**
  * Get list of groups
@@ -21,22 +27,22 @@ export async function getGroupByChatId(chatId) {
 /**
  * Add / Update group
  */
-export async function saveGroup(chat, type = "unknown") {
+export async function saveGroup(chat, type = CONSTANTS.TYPE_UNKNOWN) {
   const group = await getGroup(chat.id);
-  if (group && group.type !== type) {
-    return `❌Thất bại: Group ${chat.title } đã được chỉ định là ${group.type} rồi`;
+  if (group && group.type !== type && group.type !== CONSTANTS.TYPE_UNKNOWN) {
+    return `❌Failure: Group ${chat.title} has already been assigned as the group ${group.type}`;
   }
 
   const groupData = {
-      chatId: chat.id,
-      title: chat.title || "",
-      type: type,
-      addedAt: new Date(),
-    }
+    chatId: chat.id,
+    title: chat.title || "",
+    type: type,
+    addedAt: new Date(),
+  };
 
   await storeGroup(groupData);
 
-  return `✅Thành công: thiết lập group ${chat.title} là ${type}`;
+  return `✅Success: setting group ${chat.title} as group ${type}`;
 }
 
 /**

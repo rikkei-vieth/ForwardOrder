@@ -4,7 +4,7 @@ import { botCommands, groupCommands } from "../constants/bot.commands.js";
 
 /**
  * register command handler
- * 
+ *
  * @param {Object} bot - bot object
  * @returns {Promise<void>}
  */
