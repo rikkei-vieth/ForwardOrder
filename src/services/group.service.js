@@ -1,36 +1,49 @@
-import { getMessageDoneOrder } from "../utils/group.message.js";
+import { getGroups, storeGroup, removeGroup, getGroup } from "../repositories/group.repository.js";
 
-export async function handleGroupMessage(msg, bot) {
-  // is order message
-  const isOrderMessage = msg.text.startsWith("Order");
+/**
+ * Get list of groups
+ */
+export async function getListGroups() {
+  const groups = await getGroups();
+  return groups;
+}
 
-  // is done message
-  const isDoneMessage = msg.text.startsWith("Done Order");
+/**
+ * Get group by chatId
+ * @param {string} chatId - chat id
+ * @returns {Promise<Object>}
+ */
+export async function getGroupByChatId(chatId) {
+  const group = await getGroup(chatId);
+  return group;
+}
 
-  const msgIdString = msg.chat.id.toString();
-
-  // If order message and not from source or target group, ignore
-  if (
-    (isOrderMessage && msgIdString !== SOURCE_GROUP_ID) ||
-    (isDoneMessage && msgIdString !== TARGET_GROUP_ID)
-  ) {
-    return;
+/**
+ * Add / Update group
+ */
+export async function saveGroup(chat, type = "unknown") {
+  const group = await getGroup(chat.id);
+  if (group && group.type !== type) {
+    return `❌Thất bại: Group ${chat.title } đã được chỉ định là ${group.type} rồi`;
   }
 
-  const chatId =
-    msgIdString === SOURCE_GROUP_ID ? TARGET_GROUP_ID : SOURCE_GROUP_ID;
+  const groupData = {
+      chatId: chat.id,
+      title: chat.title || "",
+      type: type,
+      addedAt: new Date(),
+    }
 
-  const userFullName = `${msg.from.first_name || ""} ${
-    msg.from.last_name || ""
-  }`.trim();
+  await storeGroup(groupData);
 
-  const userName = msg.from.username ? `@${msg.from.username}` : "No username";
+  return `✅Thành công: thiết lập group ${chat.title} là ${type}`;
+}
 
-  const messageText = isOrderMessage
-    ? `📦 New Order Received!\n\nOrder_Id: ${msg.message_id}\n\n${msg.text}\n\nCustomer: ${userFullName}\nUsername: ${userName}`
-    : isDoneMessage
-    ? getMessageDoneOrder(isDoneMessage, msg)
-    : msg.text;
+/**
+ * Delete group
+ */
+export async function deleteGroup(chatId) {
+  await removeGroup(String(chatId));
 
-  bot.sendMessage(chatId, messageText);
+  console.log("✅ Group deleted:", chatId);
 }

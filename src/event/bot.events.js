@@ -1,4 +1,4 @@
-import { deleteGroup, saveGroup } from "../services/member.service.js";
+import { deleteGroup, saveGroup } from "../services/group.service.js";
 
 export function registerMyChatMember(bot) {
   bot.on("my_chat_member", async (msg) => {

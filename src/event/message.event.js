@@ -1,10 +1,19 @@
 import { handlePersonMessage } from "../services/person.service.js";
-import { handleGroupMessage } from "../services/group.service.js";
+import { handleGroupMessage } from "../services/message.group.service.js";
 
+/**
+ * register message event
+ * 
+ * @param {Object} bot - bot object
+ * @returns {Promise<void>}
+ */
 export function registerMessageEvent(bot) {
   bot.on("message", async (msg) => {
     // 1️⃣ bỏ qua message không có sender
     if (!msg.from) return;
+
+    // ⚠️ COMMAND → STOP
+  if (msg.text && (msg.text.startsWith('/') || msg.text.startsWith('!'))) return;
 
     // 2️⃣ message do bot gửi → bỏ qua
     if (msg.from.is_bot) return;

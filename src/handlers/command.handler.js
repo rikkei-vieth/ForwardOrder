@@ -1,13 +1,36 @@
-import { handleCommand } from "../services/command.service.js";
+import { handleGroupCommand } from "../commands/group.command.js";
+import { handlePrivateCommand } from "../commands/private.command.js";
+import { botCommands, groupCommands } from "../constants/bot.commands.js";
 
+/**
+ * register command handler
+ * 
+ * @param {Object} bot - bot object
+ * @returns {Promise<void>}
+ */
 export const registerCommandHandler = (bot) => {
-  bot.onText(/^\/(\w+)/, async (msg, match) => {
+  bot.onText(/^\/(\w+)(?:@([a-zA-Z0-9_]+))/, async (msg, match) => {
     const chat = msg.chat;
-    // Chỉ cho chạy trong private chat
-    if (chat.type !== "private") return;
+    // xử lý command trong chat cá nhân
+    if (chat.type == "private") {
+      const command = match[1];
+      // trường hợp command không match với list đã định nghĩa, bỏ qua
+      if (!botCommands.some((cmd) => cmd.command === command)) return;
+      await handlePrivateCommand(command, msg, bot);
+      return;
+    }
 
-    const command = match[1];
+    // xử lý command trong group
+    if (chat.type == "group" || chat.type == "supergroup") {
+      const command = match[1];
 
-    await handleCommand(command, msg, bot);
+      const botName = process.env.BOT_NAME;
+      if (match[2] !== botName) return;
+
+      // trường hợp command không match với list đã định nghĩa, bỏ qua
+      if (!groupCommands.some((cmd) => cmd.command === command)) return;
+      await handleGroupCommand(command, msg, bot);
+      return;
+    }
   });
 };

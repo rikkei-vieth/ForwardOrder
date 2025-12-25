@@ -1,4 +1,20 @@
 /**
+ * Get message content for order
+ *
+ * @param {*} msg
+ * @returns
+ */ 
+const getMessageOrder = (msg) => {
+  const userFullName = `${msg.from.first_name || ""} ${
+    msg.from.last_name || ""
+  }`.trim();
+
+  const userName = msg.from.username ? `@${msg.from.username}` : "No username";
+
+  return `📦 New Order Received!\n\nOrder_Id: ${msg.message_id}\n\n${msg.text}\n\nCustomer: ${userFullName}\nUsername: ${userName}`;
+};
+
+/**
  * Get message content for done order
  *
  * @param {*} isDoneMessage
@@ -28,4 +44,4 @@ const getMessageDoneOrder = (isDoneMessage, msg) => {
   return `✅ Order Completed!\n\n ${orderIdLine}\n\n${customerNameLine}\n${userNameLine}`;
 };
 
-export { getMessageDoneOrder };
+export { getMessageOrder, getMessageDoneOrder };

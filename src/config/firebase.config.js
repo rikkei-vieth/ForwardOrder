@@ -1,11 +1,7 @@
 import admin from "firebase-admin";
 import fs from "fs";
 
-const keyJsonStr = fs.readFileSync(
-  "./telebot-b4d3a-firebase-adminsdk-fbsvc-afd82cfb90.json",
-  "utf8"
-);
-const serviceAccount = JSON.parse(keyJsonStr);
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 if (!admin.apps.length) {
   admin.initializeApp({
