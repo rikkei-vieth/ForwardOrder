@@ -11,23 +11,23 @@ import { botCommands, groupCommands } from "../constants/bot.commands.js";
 export const registerCommandHandler = (bot) => {
   bot.onText(/^\/(\w+)(?:@([a-zA-Z0-9_]+))/, async (msg, match) => {
     const chat = msg.chat;
-    // xử lý command trong chat cá nhân
+    // handle command in private chat
     if (chat.type == "private") {
       const command = match[1];
-      // trường hợp command không match với list đã định nghĩa, bỏ qua
+      // if command is not in the list, skip
       if (!botCommands.some((cmd) => cmd.command === command)) return;
       await handlePrivateCommand(command, msg, bot);
       return;
     }
 
-    // xử lý command trong group
+    // handle command in group
     if (chat.type == "group" || chat.type == "supergroup") {
       const command = match[1];
 
       const botName = process.env.BOT_NAME;
       if (match[2] !== botName) return;
 
-      // trường hợp command không match với list đã định nghĩa, bỏ qua
+      // if command is not in the list, skip
       if (!groupCommands.some((cmd) => cmd.command === command)) return;
       await handleGroupCommand(command, msg, bot);
       return;

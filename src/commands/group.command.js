@@ -14,10 +14,10 @@ const handleGroupCommand = async (command, msg, bot) => {
     case "help":
       return bot.sendMessage(
         msg.chat.id,
-        `📚 Danh sách lệnh nhóm: 
+        `📚 List of commands: 
 
-/loader@${process.env.BOT_NAME} - Đăng ký nhóm Loader
-/order@${process.env.BOT_NAME} - Đăng ký nhóm Order
+/loader@${process.env.BOT_NAME} - Register loader group
+/order@${process.env.BOT_NAME} - Register order group
 `
       );
     case "order":
@@ -63,7 +63,7 @@ const registerLoaderGroup = async (msg, bot) => {
 const unknownCommand = async (msg, bot) => {
   return bot.sendMessage(
     msg.chat.id,
-    "❓ Lệnh không hợp lệ. Gõ /help để xem danh sách lệnh."
+    "❓ Invalid command. Press /help to see the list of commands."
   );
 };
 

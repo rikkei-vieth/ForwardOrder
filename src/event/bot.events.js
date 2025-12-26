@@ -8,10 +8,10 @@ export function registerMyChatMember(bot) {
     const newStatus = msg.new_chat_member.status;
 
     console.log(
-      `my_chat_member | chatId=${chat.id} | ${oldStatus} → ${newStatus}`
+      `my_chat_member | chatId=${chat.id} | ${oldStatus} -> ${newStatus}`
     );
 
-    // BOT ĐƯỢC ADD
+    // BOT IS ADDED
     if (
       (oldStatus === "left" ||
         oldStatus === "kicked" ||
@@ -21,7 +21,7 @@ export function registerMyChatMember(bot) {
       await saveGroup(chat);
     }
 
-    // BOT BỊ REMOVE
+    // BOT IS REMOVED
     if (
       (oldStatus === "member" || oldStatus === "administrator") &&
       (newStatus === "left" || newStatus === "kicked")

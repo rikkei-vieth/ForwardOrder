@@ -11,25 +11,25 @@ export function registerMessageEvent(bot) {
   bot.on("message", async (msg) => {
     console.log(msg);
 
-    // 1️⃣ reject when message has no from or text or cation
+    // reject when message has no from or text or caption
     if (!msg.from && !msg.text && !msg.caption) return;
 
-    // ⚠️ COMMAND → STOP
+    // COMMAND -> STOP
     if (msg?.text?.startsWith("/") || msg?.text?.startsWith("!")) return;
 
-    // 2️⃣ message do bot gửi → bỏ qua
+    // message sent by bot -> skip
     if (msg.from.is_bot) return;
 
     const chatType = msg.chat.type;
 
     try {
-      // 3️⃣ message cá nhân gửi cho bot
+      // message sent by person to bot
       if (chatType === "private") {
         await handlePersonMessage(msg, bot);
         return;
       }
 
-      // 4️⃣ message trong group
+      // message in group
       if (chatType === "group" || chatType === "supergroup") {
         await handleGroupMessage(msg, bot);
         return;

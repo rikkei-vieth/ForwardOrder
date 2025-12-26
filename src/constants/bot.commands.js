@@ -1,27 +1,27 @@
 const botCommands = [
   {
     command: "start",
-    description: "Khởi động bot & xem danh sách lệnh",
+    description: "Start bot & see the list of commands",
   },
   {
     command: "help",
-    description: "Hướng dẫn sử dụng bot",
+    description: "Guide to use bot",
   },
   {
     command: "groups",
-    description: "Danh sách group bot đang tham gia",
+    description: "List of groups bot is participating in",
   },
 ];
 
 const groupCommands = [
-  { command: "help", description: "Hướng dẫn sử dụng bot" },
+  { command: "help", description: "Guide to use bot" },
   {
     command: "order",
-    description: "chỉ định group này là group nhận order",
+    description: "Specify this group is the group that receives order",
   },
   {
     command: "loader",
-    description: "chỉ định group này là group xử lý order",
+    description: "Specify this group is the group that processes order",
   },
 ];
 

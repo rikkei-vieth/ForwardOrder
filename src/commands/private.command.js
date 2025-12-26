@@ -35,8 +35,8 @@ const start = async (msg, bot) => {
     chatId,
     `🤖 *TeleBot*
 
-Xin chào *${msg.from.first_name}*
-Gõ /help để xem danh sách lệnh.`,
+Hello *${msg.from.first_name}*
+Press /help to see the list of commands.`,
     { parse_mode: "Markdown" }
   );
 };
@@ -51,9 +51,9 @@ Gõ /help để xem danh sách lệnh.`,
 const help = async (msg, bot) => {
   return bot.sendMessage(
     msg.chat.id,
-    `/start - Khởi động bot
-/help - Hướng dẫn
-/groups - Danh sách group`
+    `/start - Start bot
+/help - Help
+/groups - List of groups`
   );
 };
 
@@ -70,7 +70,7 @@ const groups = async (msg, bot) => {
 
   return bot.sendMessage(
     msg.chat.id,
-    `📋 Danh sách group
+    `📋 List of groups
     ${groupList}`
   );
 };
@@ -85,7 +85,7 @@ const groups = async (msg, bot) => {
 const unknownCommand = async (msg, bot) => {
   return bot.sendMessage(
     msg.chat.id,
-    "❓ Lệnh không hợp lệ. Gõ /help để xem danh sách lệnh."
+    "❓ Invalid command. Press /help to see the list of commands."
   );
 };
 
